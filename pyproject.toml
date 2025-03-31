@@ -1,0 +1,82 @@
+[build-system]
+requires = ["hatchling>=1.26.1"]
+build-backend = "hatchling.build"
+
+[project]
+name = "himena-lmfit"
+dynamic = ["version"]
+description = "Statistical testing and modeling in himena."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+keywords = []
+authors = [
+  { name = "hanjinliu", email = "liuhanjin.sc@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "numpy>=2.0",
+  "lmfit>=1.3",
+  "himena",
+]
+
+[project.optional-dependencies]
+testing = [
+  "himena[testing]",
+  "pyqt6",
+  "pytest>=6.0.0",
+  "pytest-cov>=3.0.0",
+]
+
+[project.urls]
+Documentation = "https://github.com/hanjinliu/himena-lmfit#readme"
+Issues = "https://github.com/hanjinliu/himena-lmfit/issues"
+Source = "https://github.com/hanjinliu/himena-lmfit"
+
+[tool.hatch.version]
+path = "src/himena_lmfit/__init__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/himena_lmfit tests}"
+
+[tool.hatch.envs.test]
+features = ["testing"]
+
+[tool.hatch.envs.test.scripts]
+run = "pytest -v --cov --cov-report=xml"
+
+[tool.coverage.run]
+source_pkgs = ["himena_lmfit", "tests"]
+branch = true
+parallel = true
+
+[tool.coverage.paths]
+himena_lmfit = ["src/himena_lmfit", "*/himena-lmfit/src/himena_lmfit"]
+tests = ["tests", "*/himena-lmfit/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.pytest.ini_options]
+addopts = ["--maxfail=5"]
+
+[project.entry-points."himena.plugin"]
+"LMfit tools" = "himena_lmfit.tools"
+"Widgets" = "himena_lmfit.widgets"
