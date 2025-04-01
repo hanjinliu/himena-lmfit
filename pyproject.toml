@@ -80,3 +80,4 @@ addopts = ["--maxfail=5"]
 [project.entry-points."himena.plugin"]
 "LMfit tools" = "himena_lmfit.tools"
 "Widgets" = "himena_lmfit.widgets"
+"IO" = "himena_lmfit.io"

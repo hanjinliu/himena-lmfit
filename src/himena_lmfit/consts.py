@@ -15,3 +15,30 @@ class Types:
     MODEL = "lmfit-model"
     PARAMS = "dict.lmfit-model-params"
     MODEL_RESULT = "lmfit-model-result"
+
+
+MINIMZE_METHODS = [
+    "leastsq",
+    "least_squares",
+    "differential_evolution",
+    "brute",
+    "basinhopping",
+    "ampgo",
+    "nelder",
+    "lbfgsb",
+    "powell",
+    "cg",
+    "newton",
+    "cobyla",
+    "bfgs",
+    "tnc",
+    "trust",
+    "trust",
+    "trust",
+    "trust",
+    "dogleg",
+    "slsqp",
+    "emcee",
+    "shgo",
+    "dual_annealing",
+]

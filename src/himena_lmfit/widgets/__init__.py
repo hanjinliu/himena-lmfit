@@ -3,11 +3,13 @@ from himena_lmfit.consts import Types
 
 
 def _register():
-    from .models import QLmfitModelWidget
+    from .model import QLmfitModelWidget
     from .model_result import QLmfitModelResultWidget
+    from .parameters import QLmfitParametersWidget
 
     register_widget_class(Types.MODEL, QLmfitModelWidget)
     register_widget_class(Types.MODEL_RESULT, QLmfitModelResultWidget)
+    register_widget_class(Types.PARAMS, QLmfitParametersWidget)
 
 
 _register()
