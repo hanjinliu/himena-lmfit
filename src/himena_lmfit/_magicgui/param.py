@@ -11,15 +11,16 @@ class ParamEdit(ValuedContainerWidget[lmfit.Parameter]):
     """A widget for editing lmfit parameters."""
 
     def __init__(self, value, **kwargs):
-        self._value = FloatEdit()
-        self._min = FloatEdit()
-        self._max = FloatEdit()
+        self._value = FloatEdit(name="Value")
+        self._min = FloatEdit(name="Min")
+        self._max = FloatEdit(name="Max")
         super().__init__(
             value=value,
             widgets=[self._value, self._min, self._max],
             layout="horizontal",
             **kwargs,
         )
+        self.margins = (0, 0, 0, 0)
         self._value.changed.connect(self._on_widget_state_changed)
         self._min.changed.connect(self._on_widget_state_changed)
         self._max.changed.connect(self._on_widget_state_changed)

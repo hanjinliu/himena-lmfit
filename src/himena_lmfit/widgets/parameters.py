@@ -76,6 +76,9 @@ class QParametersTableModel(QtCore.QAbstractTableModel):
 
 
 class QLmfitParametersWidget(QTableBase):
+    __himena_widget_id__ = "himena-lmfit:QLmfitParametersWidget"
+    __himena_display_name__ = "lmfit Parameters"
+
     def __init__(self):
         super().__init__()
         self.setFont(QtGui.QFont(MonospaceFontFamily))

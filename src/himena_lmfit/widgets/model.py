@@ -9,6 +9,9 @@ from himena_lmfit.consts import Types
 
 
 class QLmfitModelWidget(QtW.QWidget):
+    __himena_widget_id__ = "himena-lmfit:QLmfitModelWidget"
+    __himena_display_name__ = "lmfit Model"
+
     def __init__(self):
         self._lmfit_model = lmfit.models.ConstantModel()
         super().__init__()

@@ -10,11 +10,17 @@ from himena_lmfit.consts import Menus, Types
 @register_function(
     menus=Menus.LMFIT_MODELS,
     title="Build lmfit model",
-    types=[StandardType.TEXT],
+    types=[StandardType.TEXT, StandardType.FUNCTION],
     command_id="himena_lmfit:build-lmfit-model",
 )
 def build_lmfit_model(model: WidgetDataModel) -> WidgetDataModel:
-    fmodel = compile_as_function(model)
+    """Built a lmfit model from a text or function"""
+    if model.is_subtype_of(StandardType.TEXT):
+        fmodel = compile_as_function(model)
+    elif model.is_subtype_of(StandardType.FUNCTION):
+        fmodel = model.value
+    else:
+        raise TypeError("model must be a text or function")
     return WidgetDataModel(
         value=lmfit.Model(fmodel.value),
         type=Types.MODEL,
@@ -33,11 +39,10 @@ def build_constant_model() -> Parametric:
     @configure_gui(c={"widget_type": ParamEdit})
     def create(
         prefix: str = "",
-        name: str = "",
         c=None,
     ) -> WidgetDataModel:
         """Create a constant model"""
-        return _create_model(lmfit.models.ConstantModel(prefix=prefix))
+        return _create_model(lmfit.models.ConstantModel(prefix=prefix, c=c))
 
     return create
 
