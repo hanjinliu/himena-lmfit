@@ -101,7 +101,7 @@ def guess_params_from_table(model: WidgetDataModel) -> Parametric:
         cols = df.column_names()
         if len(cols) != 2:
             raise ValueError("DataFrame must have exactly 2 columns")
-        params = lmfit_model.guess(df[cols[0]], df[cols[1]])
+        params = lmfit_model.guess(df[cols[1]], df[cols[0]])
         return WidgetDataModel(
             value=params,
             type=Types.PARAMS,
@@ -163,6 +163,7 @@ def curve_fit(model: WidgetDataModel) -> Parametric:
         y: SelectionType,
         weights: SelectionType | None = None,
         initial_params: WidgetDataModel | None = None,
+        guess: bool = True,
         method: str = "leastsq",
     ) -> WidgetDataModel:
         """Curve fit"""
@@ -173,7 +174,10 @@ def curve_fit(model: WidgetDataModel) -> Parametric:
         else:
             weightsarr = None
         if initial_params is None:
-            params = None
+            if guess:
+                params = lmfit_model.guess(yarr, xarr)
+            else:
+                params = None
         else:
             params = initial_params.value
         result = lmfit_model.fit(
@@ -209,6 +213,7 @@ def curve_fit_from_table(model: WidgetDataModel) -> Parametric:
     def curve_fit_values(
         function: WidgetDataModel,
         initial_params: WidgetDataModel | None = None,
+        guess: bool = True,
         method: str = "leastsq",
     ) -> WidgetDataModel:
         """Curve fit"""
@@ -227,7 +232,10 @@ def curve_fit_from_table(model: WidgetDataModel) -> Parametric:
             raise ValueError("DataFrame must have exactly 2 columns")
 
         if initial_params is None:
-            params = None
+            if guess:
+                params = lmfit_model.guess(yarr, xarr)
+            else:
+                params = None
         else:
             params = initial_params.value
         result = lmfit_model.fit(

@@ -38,7 +38,7 @@ class QLmfitModelWidget(QtW.QWidget):
     def to_model(self) -> WidgetDataModel:
         return WidgetDataModel(
             value=self._lmfit_model,
-            type=Types.MODEL,
+            type=self.model_type(),
             title=self._lmfit_model.name,
         )
 
