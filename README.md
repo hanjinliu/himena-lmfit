@@ -6,6 +6,7 @@
 
 -----
 
+![](images/window.png)
 
 A [himena](https://github.com/hanjinliu/himena) plugin for minimization and curve
 fitting using [`lmfit`](https://github.com/lmfit/lmfit-py).

@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "himena-lmfit"
 dynamic = ["version"]
-description = "Statistical testing and modeling in himena."
+description = "Curve fitting and optimization in himena"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }
