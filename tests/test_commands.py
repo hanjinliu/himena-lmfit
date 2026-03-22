@@ -7,7 +7,7 @@ def test_guess_params(himena_ui: MainWindow, qtbot: QtBot):
     x = np.arange(10)
     win = himena_ui.add_object({"x": x, "y": x**2 /4 - x + 2}, type="dataframe")
     himena_ui.exec_action(
-        "himena_lmfit:models:build-quadratic-model", with_params={"prefix": "test_"}
+        "himena_lmfit:models-00_simple:build-quadratic-model", with_params={"prefix": "test_"}
     )
     win_model = himena_ui.current_window
     out0 = himena_ui.exec_action(

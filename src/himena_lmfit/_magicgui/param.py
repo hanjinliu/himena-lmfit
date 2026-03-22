@@ -3,11 +3,11 @@ from __future__ import annotations
 import numpy as np
 from magicgui.types import Undefined
 from magicgui.widgets.bases import ValuedContainerWidget
-from himena.qt.magicgui import FloatEdit, get_type_map
+from himena.qt.magicgui import FloatEdit
 from himena_lmfit._lazy_import import lmfit
 
 
-class ParamEdit(ValuedContainerWidget[lmfit.Parameter]):
+class ParamEdit(ValuedContainerWidget["lmfit.Parameter"]):
     """A widget for editing lmfit parameters."""
 
     def __init__(self, value, **kwargs):
@@ -58,7 +58,3 @@ class ParamEdit(ValuedContainerWidget[lmfit.Parameter]):
     def _on_widget_state_changed(self):
         """Update the value when the widget state changes."""
         self.changed.emit(self.get_value())
-
-
-typemap = get_type_map()
-typemap.register_type(lmfit.Parameter, widget_type=ParamEdit)

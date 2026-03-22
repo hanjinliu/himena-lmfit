@@ -20,13 +20,14 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
   "numpy>=2.0",
   "lmfit>=1.3",
-  "himena",
+  "himena>=0.1.8",
 ]
 
 [project.optional-dependencies]

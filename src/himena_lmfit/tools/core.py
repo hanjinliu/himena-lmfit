@@ -1,4 +1,4 @@
-from himena import Parametric, WidgetDataModel, StandardType, create_model
+from himena import MainWindow, Parametric, WidgetDataModel, StandardType, create_model
 from himena.widgets import SubWindow
 from himena.data_wrappers import wrap_dataframe, DataFrameWrapper
 from himena.standards import plotting as hplt
@@ -16,6 +16,7 @@ from himena_lmfit._magicgui import ParamEdit
 from himena_lmfit.consts import Menus, Types, MINIMZE_METHODS
 
 SelectionType = tuple[tuple[int, int], tuple[int, int]]
+_FUNC_OR_MODEL = (StandardType.FUNCTION, Types.MODEL)
 
 
 def _model_to_xy(model, x, y):
@@ -88,12 +89,10 @@ def guess_params(model: WidgetDataModel) -> Parametric:
     types=[StandardType.TABLE, StandardType.DATAFRAME, StandardType.PLOT],
     command_id="himena_lmfit:models:guess-params-from-table",
 )
-def guess_params_from_table(model: WidgetDataModel) -> Parametric:
+def guess_params_from_table(model: WidgetDataModel, ui: MainWindow) -> Parametric:
     """Guess parameters from table data"""
 
-    @configure_gui(
-        function={"types": [StandardType.FUNCTION, Types.MODEL]},
-    )
+    @configure_gui(function={"types": _FUNC_OR_MODEL, "value": _default_func_model(ui)})
     def guess_param_values(function: WidgetDataModel) -> WidgetDataModel:
         """Guess parameters"""
         lmfit_model = _cast_lmfit_model(function)
@@ -141,11 +140,11 @@ def fit_result_to_dataframe(model: WidgetDataModel) -> WidgetDataModel:
 
 @register_function(
     menus=Menus.LMFIT_OPTIMIZE,
-    title="Curve fit ...",
+    title="Curve Fit (from function) ...",
     types=[Types.MODEL, StandardType.FUNCTION],
     command_id="himena_lmfit:fit:curve-fit",
 )
-def curve_fit(model: WidgetDataModel) -> Parametric:
+def curve_fit(model: WidgetDataModel, ui: MainWindow) -> Parametric:
     """Curve fit"""
     lmfit_model = _cast_lmfit_model(model)
 
@@ -154,7 +153,7 @@ def curve_fit(model: WidgetDataModel) -> Parametric:
         x=table_selection_gui_option("table"),
         y=table_selection_gui_option("table"),
         weights=table_selection_gui_option("table"),
-        initial_params={"types": Types.PARAMS},
+        initial_params={"types": Types.PARAMS, "value": _default_params_model(ui)},
         method={"choices": MINIMZE_METHODS},
     )
     def curve_fit_values(
@@ -198,16 +197,16 @@ def curve_fit(model: WidgetDataModel) -> Parametric:
 
 @register_function(
     menus=["tools/lmfit/optimize", "/model_menu/lmfit"],
-    title="Curve fit ...",
+    title="Curve Fit (from data) ...",
     types=[StandardType.TABLE, StandardType.DATAFRAME, StandardType.PLOT],
     command_id="himena_lmfit:fit:curve-fit-from-table",
 )
-def curve_fit_from_table(model: WidgetDataModel) -> Parametric:
+def curve_fit_from_table(model: WidgetDataModel, ui: MainWindow) -> Parametric:
     """Curve fit from table data"""
 
     @configure_gui(
-        function={"types": [StandardType.FUNCTION, Types.MODEL]},
-        initial_params={"types": Types.PARAMS},
+        function={"types": _FUNC_OR_MODEL, "value": _default_func_model(ui)},
+        initial_params={"types": Types.PARAMS, "value": _default_params_model(ui)},
         method={"choices": MINIMZE_METHODS},
     )
     def curve_fit_values(
@@ -284,7 +283,7 @@ def ci_report(model: WidgetDataModel) -> WidgetDataModel:
 
 @register_function(
     menus=Menus.LMFIT_RESULTS,
-    title="Plot fit result",
+    title="Plot Fit Result",
     types=[Types.MODEL_RESULT],
     command_id="himena_lmfit:fit:plot-fit-result",
     keybindings=["P"],
@@ -318,7 +317,7 @@ def plot_fit_result(model: WidgetDataModel) -> WidgetDataModel:
 
 @register_function(
     menus=Menus.LMFIT_RESULTS,
-    title="Plot fit result",
+    title="Plot Fit Residual",
     types=[Types.MODEL_RESULT],
     command_id="himena_lmfit:fit:plot-fit-residual",
     keybindings=["R"],
@@ -389,3 +388,21 @@ def _independent_var(minimizer: "lmfit.model.ModelResult") -> str:
         return minimizer.model.independent_vars[0]
     else:
         raise ValueError("Model must have exactly one independent variable")
+
+
+def _default_params_model(ui: MainWindow) -> WidgetDataModel | None:
+    """Get the default parameters model"""
+    if candidates := ui.windows_for_type(Types.PARAMS):
+        default_params = candidates[-1].to_model()
+    else:
+        default_params = None
+    return default_params
+
+
+def _default_func_model(ui: MainWindow) -> WidgetDataModel | None:
+    """Get the default function model"""
+    if candidates := ui.windows_for_type(_FUNC_OR_MODEL):
+        default_func = candidates[-1].to_model()
+    else:
+        default_func = None
+    return default_func

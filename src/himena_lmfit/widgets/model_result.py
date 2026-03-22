@@ -15,7 +15,7 @@ class QLmfitModelResultWidget(QtW.QWidget):
     __himena_widget_id__ = "himena-lmfit:QLmfitModelResultWidget"
     __himena_display_name__ = "lmfit Model Result"
 
-    def __init__(self):
+    def __init__(self, ui):
         self._lmfit_model_result: lmfit.model.ModelResult | None = None
         super().__init__()
         layout = QtW.QVBoxLayout(self)
@@ -24,7 +24,7 @@ class QLmfitModelResultWidget(QtW.QWidget):
         self._name.setTextInteractionFlags(
             QtCore.Qt.TextInteractionFlag.TextSelectableByMouse
         )
-        self._params = QLmfitParametersWidget()
+        self._params = QLmfitParametersWidget(ui)
         self._text = QtW.QPlainTextEdit(self)
         self._text.setReadOnly(True)
 
