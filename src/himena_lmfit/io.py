@@ -6,7 +6,7 @@ from himena_lmfit._lazy_import import lmfit
 from himena_lmfit.consts import Types
 
 
-@register_reader_plugin
+@register_reader_plugin(priority=0)
 def read_lmfit_model(path: Path) -> "lmfit.Model":
     """Read a lmfit model from a file."""
     model = lmfit.model.load_model(path)
@@ -37,7 +37,7 @@ def _match_lmfit_model_write(model: WidgetDataModel, path: Path) -> bool:
     return isinstance(model.value, lmfit.Model)
 
 
-@register_reader_plugin
+@register_reader_plugin(priority=0)
 def read_lmfit_result(path: Path) -> "lmfit.model.ModelResult":
     """Read a lmfit result from a file."""
     result = lmfit.model.load_modelresult(path)

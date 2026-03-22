@@ -13,8 +13,8 @@ def test_lmfit_model_widget(qtbot: QtBot):
         tester.update_model(value=lmfit.models.StepModel())
         tester.to_model()
 
-def test_lmfit_model_result_widget(qtbot: QtBot):
-    widget = QLmfitModelResultWidget()
+def test_lmfit_model_result_widget(himena_ui, qtbot: QtBot):
+    widget = QLmfitModelResultWidget(himena_ui)
     qtbot.addWidget(widget)
     m = lmfit.models.StepModel()
     result = m.fit(np.array([0.1, 0, 0.1, 1.2, 1.1]), x=np.arange(5))
@@ -22,8 +22,8 @@ def test_lmfit_model_result_widget(qtbot: QtBot):
         tester.update_model(value=result)
         tester.to_model()
 
-def test_lmfit_parameters_widget(qtbot: QtBot):
-    widget = QLmfitParametersWidget()
+def test_lmfit_parameters_widget(himena_ui, qtbot: QtBot):
+    widget = QLmfitParametersWidget(himena_ui)
     qtbot.addWidget(widget)
     m = lmfit.models.StepModel()
     params = m.guess(np.array([0.1, 0, 0.1, 1.2, 1.1]), x=np.arange(5))
